@@ -1,4 +1,4 @@
-package com.neoapp.model.entities;
+package com.neoapp.model;
 
 import jakarta.persistence.*;
 

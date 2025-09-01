@@ -6,4 +6,5 @@ import com.neoapp.dto.ClienteResponseDTO;
 public interface ClienteService {
     ClienteResponseDTO criarCliente(ClienteRequestDTO dto);
     ClienteResponseDTO atualizarCliente(Long id, ClienteRequestDTO dto);
+    void deletarCliente(Long id);
 }

@@ -47,4 +47,8 @@ public class ClienteServiceImpl implements ClienteService{
         Cliente atualizado = clienteRepository.save(cliente);
         return mapper.toDto(atualizado);
     }
+
+    public void deletarCliente(Long id) {
+        clienteRepository.deleteById(id);
+    }
 }

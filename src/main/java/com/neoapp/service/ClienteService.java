@@ -12,5 +12,6 @@ public interface ClienteService {
     ClienteResponseDTO buscarPorCpf(String cpf);
     ClienteResponseDTO buscarPorId(Long id);
     Page<ClienteResponseDTO> listarClientes(Pageable pageable);
+    Page<ClienteResponseDTO> listarPorNome(String nome, Pageable pageable);
 
 }

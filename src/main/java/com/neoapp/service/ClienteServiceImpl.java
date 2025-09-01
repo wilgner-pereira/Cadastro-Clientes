@@ -66,6 +66,13 @@ public class ClienteServiceImpl implements ClienteService{
         return mapper.toDto(cliente);
     }
 
+    // Busca por nome (parcial, paginada)
+    public Page<ClienteResponseDTO> listarPorNome(String nome, Pageable pageable) {
+        return clienteRepository.findByNomeContainingIgnoreCase(nome, pageable)
+                .map(mapper::toDto);
+    }
+
+    // Busca completa(paginada)
     public Page<ClienteResponseDTO> listarClientes(Pageable pageable) {
         return clienteRepository.findAll(pageable).map(mapper::toDto);
     }

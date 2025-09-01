@@ -5,6 +5,8 @@ import com.neoapp.dto.ClienteRequestDTO;
 import com.neoapp.dto.ClienteResponseDTO;
 import com.neoapp.model.Cliente;
 import com.neoapp.repository.ClienteRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public class ClienteServiceImpl implements ClienteService{
 
@@ -51,4 +53,20 @@ public class ClienteServiceImpl implements ClienteService{
     public void deletarCliente(Long id) {
         clienteRepository.deleteById(id);
     }
+
+    public ClienteResponseDTO buscarPorCpf(String cpf) {
+        Cliente cliente = clienteRepository.findByCpf(cpf).orElseThrow(() -> new RuntimeException("Cliente não encontrado"));
+        return mapper.toDto(cliente);
+    }
+
+    public ClienteResponseDTO buscarPorId(Long id) {
+        Cliente cliente = clienteRepository.findById(id).orElseThrow(() -> new RuntimeException("Cliente não encontrado"));
+        return mapper.toDto(cliente);
+    }
+
+    public Page<ClienteResponseDTO> listarClientes(Pageable pageable) {
+        return clienteRepository.findAll(pageable).map(mapper::toDto);
+    }
+
+
 }

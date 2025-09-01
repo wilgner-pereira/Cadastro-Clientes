@@ -15,10 +15,5 @@ public interface ClienteMapper {
 
     Cliente toEntity(ClienteRequestDTO dto);
 
-    @Mapping(target = "idade", expression = "java(calcularIdade(cliente.getDataNascimento()))")
     ClienteResponseDTO toDto(Cliente cliente);
-
-    default int calcularIdade(LocalDate dataNascimento) {
-        return Period.between(dataNascimento, LocalDate.now()).getYears();
-    }
 }

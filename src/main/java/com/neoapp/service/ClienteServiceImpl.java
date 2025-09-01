@@ -7,7 +7,9 @@ import com.neoapp.model.Cliente;
 import com.neoapp.repository.ClienteRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
 
+@Service
 public class ClienteServiceImpl implements ClienteService{
 
     private final ClienteRepository clienteRepository;

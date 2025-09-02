@@ -25,6 +25,7 @@ public class Cliente {
     @Column(name = "data_nascimento")
     private LocalDate dataNascimento;
 
+    @Column(name = "email", unique = true, length = 150)
     private String email;
 
     private LocalDateTime createdAt;

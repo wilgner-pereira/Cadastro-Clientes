@@ -1,0 +1,12 @@
+# Perfil de Produção (PostgreSQL)
+spring:
+  datasource:
+    # Use variáveis de ambiente para as credenciais do banco em produção!
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/clientesdb}
+    driver-class-name: org.postgresql.Driver
+    username: ${DB_USERNAME:postgres}
+    password: ${DB_PASSWORD:postgres}
+
+# Em produção, o segredo do JWT DEVE vir de variáveis de ambiente.
+# Não coloque o valor aqui diretamente. O Spring já vai pegar do
+# application.yml principal, que por sua vez espera a variável de ambiente.

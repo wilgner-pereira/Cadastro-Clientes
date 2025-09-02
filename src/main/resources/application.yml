@@ -1,51 +1,15 @@
+# ======================================================
+# Configurações Comuns a Todos os Perfis
+# ======================================================
+
 spring:
+  # Configurações gerais da aplicação
   application:
     name: clientes-api
-
   profiles:
-    active: dev   # padr�o � dev, mas voc� pode trocar para prod com --spring.profiles.active=prod
+    active: dev
 
----
-
-# Perfil de desenvolvimento (H2)
-spring:
-  config:
-    activate:
-      on-profile: dev
-
-  datasource:
-    url: jdbc:h2:mem:clientesdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
-    driver-class-name: org.h2.Driver
-    username: sa
-    password:
-
-  jpa:
-    hibernate:
-      ddl-auto: update   # cria/atualiza tabelas automaticamente
-    show-sql: true
-    properties:
-      hibernate:
-        format_sql: true
-
-  h2:
-    console:
-      enabled: true
-      path: /h2-console
-
----
-
-# Perfil de produ��o (PostgreSQL)
-spring:
-  config:
-    activate:
-      on-profile: prod
-
-  datasource:
-    url: jdbc:postgresql://localhost:5432/clientesdb
-    driver-class-name: org.postgresql.Driver
-    username: postgres
-    password: postgres
-
+  # Configurações do JPA (iguais para ambos os perfis)
   jpa:
     hibernate:
       ddl-auto: update
@@ -53,3 +17,16 @@ spring:
     properties:
       hibernate:
         format_sql: true
+
+  # Configuração do Console H2
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+
+# ======================================================
+# Configuração do JWT (fora do bloco spring)
+# ======================================================
+jwt:
+  secret: ${JWT_SECRET}
+  expiration-ms: ${JWT_EXPIRATION_MS:3600000}

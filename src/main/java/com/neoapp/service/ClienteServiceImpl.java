@@ -9,6 +9,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+
 @Service
 public class ClienteServiceImpl implements ClienteService{
 
@@ -25,7 +27,11 @@ public class ClienteServiceImpl implements ClienteService{
         if (clienteRepository.findByCpf(dto.cpf()).isPresent()) {
             throw new RuntimeException("CPF já cadastrado");
         }
+        if(clienteRepository.findByEmail(dto.email()).isPresent()){
+            throw new RuntimeException("Email já cadastrado");
+        }
         Cliente cliente = mapper.toEntity(dto);
+        cliente.setCreatedAt(LocalDateTime.now());
         Cliente salvo = clienteRepository.save(cliente);
         return mapper.toDto(salvo);
     }
@@ -36,23 +42,24 @@ public class ClienteServiceImpl implements ClienteService{
         clienteRepository.findByCpf(dto.cpf())
                 .filter(c -> !c.getId().equals(id))
                         .ifPresent(c -> {throw new RuntimeException("CPF já cadastrado");});
+        clienteRepository.findByEmail(dto.email())
+                .filter(c -> !c.getId().equals(id))
+                        .ifPresent(c -> {throw new RuntimeException("Email já cadastrado");});
         //  Alterações em dados imutáveis não são ideais. No entanto, como este sistema de cadastro faz pesquisa de cadastros
         //  entendo que ele seria usado pela própria empresa que cadastra e erros podem ocorrer no momento do cadastro, temos varias abordagens:
         //  exclusão do registro e novo cadastro do cliente,
-        //  atualização do CPF, que pode ser controlada com validação, alteração via login de administrador,
+        //  atualização que pode ser controlada com validação, alteração via login de administrador,
         //  ou registro de logs de alterações.
         //  Para nosso caso vou permitir a atualização de todos os campos.
-        cliente.setCpf(dto.cpf());
-        //O mesmo caso do CPF se aplica ao nome.
-        cliente.setNome(dto.nome());
-        cliente.setEmail(dto.email());
-        //O mesmo caso do CPF se aplica a data de nascimento.
-        cliente.setDataNascimento(dto.dataNascimento());
+        mapper.updateClienteFromDto(dto, cliente);
         Cliente atualizado = clienteRepository.save(cliente);
         return mapper.toDto(atualizado);
     }
 
     public void deletarCliente(Long id) {
+        if (!clienteRepository.existsById(id)) {
+            throw new RuntimeException("Cliente não encontrado para exclusão.");
+        }
         clienteRepository.deleteById(id);
     }
 

@@ -1,25 +1,27 @@
 package com.neoapp.dto;
 
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
+import com.neoapp.validation.Cpf;
+import jakarta.validation.constraints.*;
+import org.hibernate.validator.constraints.br.CPF;
 
 import java.time.LocalDate;
 
 public record ClienteRequestDTO(
         @NotBlank(message = "CPF é obrigatório")
-        @Size(min = 11, max = 11, message = "CPF deve ter 11 dígitos")
+        @Cpf
         String cpf,
 
         @NotBlank(message = "Nome é obrigatório")
-        @Size(max = 100, message = "Nome deve ter no máximo 100 caracteres")
+        @Size(min = 2, max = 100, message = "Nome deve ter no mínimo 2 caracteres e no máximo 100")
+        @Pattern(regexp = "^[A-Za-zÀ-ú ]+$", message = "Nome inválido")
         String nome,
 
         @NotNull(message = "Data de nascimento é obrigatória")
+        @Past(message = "Data de nascimento deve estar no passado")
         LocalDate dataNascimento,
 
         @Email(message = "Email inválido")
+        @NotBlank(message = "Email obrigatório")
         String email
 
 

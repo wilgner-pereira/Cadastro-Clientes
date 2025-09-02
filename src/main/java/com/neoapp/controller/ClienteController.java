@@ -2,10 +2,13 @@ package com.neoapp.controller;
 
 import com.neoapp.dto.ClienteRequestDTO;
 import com.neoapp.dto.ClienteResponseDTO;
+import com.neoapp.exception.ApiResponse;
 import com.neoapp.service.ClienteService;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -18,38 +21,57 @@ public class ClienteController {
     }
 
     @PostMapping
-    public ClienteResponseDTO criar(@RequestBody @Valid ClienteRequestDTO dto) {
-        return clienteService.criarCliente(dto);
+    public ResponseEntity<ApiResponse<ClienteResponseDTO>> criar(@RequestBody @Valid ClienteRequestDTO dto) {
+        ClienteResponseDTO response = clienteService.criarCliente(dto);
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(ApiResponse.success(response));
     }
 
     @PutMapping("/{id}")
-    public ClienteResponseDTO atualizar(@PathVariable Long id, @RequestBody @Valid ClienteRequestDTO dto) {
-        return clienteService.atualizarCliente(id, dto);
+    public ResponseEntity<ApiResponse<ClienteResponseDTO>> atualizar(@PathVariable Long id, @RequestBody @Valid ClienteRequestDTO dto) {
+        ClienteResponseDTO response = clienteService.atualizarCliente(id, dto);
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(ApiResponse.success(response));
     }
 
     @DeleteMapping("/{id}")
-    public void deletar(@PathVariable Long id) {
+    public ResponseEntity<Void> deletar(@PathVariable Long id) {
         clienteService.deletarCliente(id);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
     @GetMapping("/cpf/{cpf}")
-    public ClienteResponseDTO buscarPorCpf(@PathVariable String cpf) {
-        return clienteService.buscarPorCpf(cpf);
+    public ResponseEntity<ApiResponse<ClienteResponseDTO>> buscarPorCpf(@PathVariable String cpf) {
+        ClienteResponseDTO response = clienteService.buscarPorCpf(cpf);
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(ApiResponse.success(response));
     }
 
     @GetMapping("/{id}")
-    public ClienteResponseDTO buscarPorId(@PathVariable Long id) {
-        return clienteService.buscarPorId(id);
+    public ResponseEntity<ApiResponse<ClienteResponseDTO>> buscarPorId(@PathVariable Long id) {
+        ClienteResponseDTO response = clienteService.buscarPorId(id);
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(ApiResponse.success(response));
     }
 
     @GetMapping("/nome")
-    public Page<ClienteResponseDTO> buscarPorNome(@RequestParam String nome, Pageable pageable) {
-        return clienteService.listarPorNome(nome, pageable);
+    public ResponseEntity<ApiResponse<Page<ClienteResponseDTO>>> buscarPorNome(@RequestParam String nome, Pageable pageable) {
+        Page<ClienteResponseDTO> response = clienteService.listarPorNome(nome, pageable);
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(ApiResponse.success(response));
     }
 
     @GetMapping
-    public Page<ClienteResponseDTO> listarTodos(Pageable pageable) {
-        return clienteService.listarClientes(pageable);
+    public ResponseEntity<ApiResponse<Page<ClienteResponseDTO>>> listarTodos(Pageable pageable) {
+        Page<ClienteResponseDTO> response = clienteService.listarClientes(pageable);
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(ApiResponse.success(response));
     }
 
 

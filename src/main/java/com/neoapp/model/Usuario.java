@@ -12,17 +12,17 @@ public class Usuario {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true, nullable = false)
-    private String nome;
+    @Column(unique = true, nullable = false, length = 50)
+    private String username;
 
-    @Column(nullable = false)
-    private String senha;
+    @Column(nullable = false, length = 100)
+    private String password;
 
     public Usuario(){
     }
-    public Usuario(String nome, String senha){
-        this.nome = nome;
-        this.senha = senha;
+    public Usuario(String username, String password){
+        this.username = username;
+        this.password = password;
     }
 
     public Long getId() {
@@ -33,20 +33,20 @@ public class Usuario {
         this.id = id;
     }
 
-    public String getNome() {
-        return nome;
+    public String getUsername() {
+        return username;
     }
 
-    public void setNome(String nome) {
-        this.nome = nome;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
-    public String getSenha() {
-        return senha;
+    public String getPassword() {
+        return password;
     }
 
-    public void setSenha(String senha) {
-        this.senha = senha;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     @Override

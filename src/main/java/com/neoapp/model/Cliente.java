@@ -16,16 +16,16 @@ public class Cliente {
     @Column(name = "cliente_id", nullable = false, unique = true)
     private Long id;
 
-    @Column(name = "cpf", unique = true, length=11)
+    @Column(name = "cpf", unique = true, length=11, nullable = false)
     private String cpf;
 
     @Column(name = "nome", nullable = false, length = 100)
     private String nome;
 
-    @Column(name = "data_nascimento")
+    @Column(name = "data_nascimento", nullable = false)
     private LocalDate dataNascimento;
 
-    @Column(name = "email", unique = true, length = 150)
+    @Column(name = "email", unique = true, length = 150, nullable = false)
     private String email;
 
     private LocalDateTime createdAt;

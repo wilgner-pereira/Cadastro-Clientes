@@ -32,3 +32,8 @@ build/
 ### VS Code ###
 .vscode/
 *.log
+
+# Arquivos de configuração locais com segredos
+application-dev.properties
+application-dev.yml
+.env

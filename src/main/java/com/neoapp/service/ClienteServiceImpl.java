@@ -3,6 +3,9 @@ package com.neoapp.service;
 import com.neoapp.dto.ClienteMapper;
 import com.neoapp.dto.ClienteRequestDTO;
 import com.neoapp.dto.ClienteResponseDTO;
+import com.neoapp.exception.BusinessRuleException;
+import com.neoapp.exception.ErrorCode;
+import com.neoapp.exception.ResourceNotFoundException;
 import com.neoapp.model.Cliente;
 import com.neoapp.repository.ClienteRepository;
 import org.springframework.data.domain.Page;
@@ -25,10 +28,10 @@ public class ClienteServiceImpl implements ClienteService{
     @Override
     public ClienteResponseDTO criarCliente(ClienteRequestDTO dto) {
         if (clienteRepository.findByCpf(dto.cpf()).isPresent()) {
-            throw new RuntimeException("CPF já cadastrado");
+            throw new BusinessRuleException(ErrorCode.CPF_ALREADY_EXISTS);
         }
         if(clienteRepository.findByEmail(dto.email()).isPresent()){
-            throw new RuntimeException("Email já cadastrado");
+            throw new BusinessRuleException(ErrorCode.EMAIL_ALREADY_EXISTS);
         }
         Cliente cliente = mapper.toEntity(dto);
         cliente.setCreatedAt(LocalDateTime.now());
@@ -38,13 +41,13 @@ public class ClienteServiceImpl implements ClienteService{
 
     public ClienteResponseDTO atualizarCliente(Long id, ClienteRequestDTO dto) {
         Cliente cliente = clienteRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Cliente não encontrado"));
+                .orElseThrow(() -> new ResourceNotFoundException(ErrorCode.CLIENTE_NOT_FOUND));
         clienteRepository.findByCpf(dto.cpf())
                 .filter(c -> !c.getId().equals(id))
-                        .ifPresent(c -> {throw new RuntimeException("CPF já cadastrado");});
+                        .ifPresent(c -> {throw new BusinessRuleException(ErrorCode.CPF_ALREADY_EXISTS);});
         clienteRepository.findByEmail(dto.email())
                 .filter(c -> !c.getId().equals(id))
-                        .ifPresent(c -> {throw new RuntimeException("Email já cadastrado");});
+                        .ifPresent(c -> {throw new BusinessRuleException(ErrorCode.EMAIL_ALREADY_EXISTS);});
         //  Alterações em dados imutáveis não são ideais. No entanto, como este sistema de cadastro faz pesquisa de cadastros
         //  entendo que ele seria usado pela própria empresa que cadastra e erros podem ocorrer no momento do cadastro, temos varias abordagens:
         //  exclusão do registro e novo cadastro do cliente,
@@ -58,18 +61,18 @@ public class ClienteServiceImpl implements ClienteService{
 
     public void deletarCliente(Long id) {
         if (!clienteRepository.existsById(id)) {
-            throw new RuntimeException("Cliente não encontrado para exclusão.");
+            throw new ResourceNotFoundException(ErrorCode.CLIENTE_NOT_FOUND);
         }
         clienteRepository.deleteById(id);
     }
 
     public ClienteResponseDTO buscarPorCpf(String cpf) {
-        Cliente cliente = clienteRepository.findByCpf(cpf).orElseThrow(() -> new RuntimeException("Cliente não encontrado"));
+        Cliente cliente = clienteRepository.findByCpf(cpf).orElseThrow(() -> new ResourceNotFoundException(ErrorCode.CLIENTE_NOT_FOUND));
         return mapper.toDto(cliente);
     }
 
     public ClienteResponseDTO buscarPorId(Long id) {
-        Cliente cliente = clienteRepository.findById(id).orElseThrow(() -> new RuntimeException("Cliente não encontrado"));
+        Cliente cliente = clienteRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(ErrorCode.CLIENTE_NOT_FOUND));
         return mapper.toDto(cliente);
     }
 

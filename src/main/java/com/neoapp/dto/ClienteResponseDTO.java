@@ -17,9 +17,9 @@ public record ClienteResponseDTO(
 
 )   {
         @JsonProperty
-        public int idade() {
-            return Period.between(this.dataNascimento, LocalDate.now()).getYears();
-        }
+        public Integer idade() {
+            return dataNascimento == null ? null : Period.between(this.dataNascimento, LocalDate.now()).getYears();
+    }
     }
 
 

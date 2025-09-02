@@ -14,6 +14,5 @@ public interface ClienteRepository extends JpaRepository<Cliente, Long> {
     Page<Cliente> findByNomeContainingIgnoreCase(String nome, Pageable pageable);
 
 
-
-
+    Optional<Cliente> findByEmail(String email);
 }

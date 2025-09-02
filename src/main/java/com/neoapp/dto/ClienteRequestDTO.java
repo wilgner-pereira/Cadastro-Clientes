@@ -2,7 +2,6 @@ package com.neoapp.dto;
 
 import com.neoapp.validation.Cpf;
 import jakarta.validation.constraints.*;
-import org.hibernate.validator.constraints.br.CPF;
 
 import java.time.LocalDate;
 
@@ -13,7 +12,7 @@ public record ClienteRequestDTO(
 
         @NotBlank(message = "Nome é obrigatório")
         @Size(min = 2, max = 100, message = "Nome deve ter no mínimo 2 caracteres e no máximo 100")
-        @Pattern(regexp = "^[A-Za-zÀ-ú ]+$", message = "Nome inválido")
+        @Pattern(regexp = "^[\\p{L} ]+$", message = "Nome inválido")
         String nome,
 
         @NotNull(message = "Data de nascimento é obrigatória")

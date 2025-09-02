@@ -23,15 +23,15 @@ public class UsuarioServiceImpl implements UsuarioService {
 
     @Override
     public UsuarioResponseDTO registrarNovoUsuario(RegisterRequestDTO registerRequest) {
-        if (usuarioRepository.findByNome(registerRequest.nome()).isPresent()) {
+        if (usuarioRepository.findByUsername(registerRequest.username()).isPresent()) {
             throw new BusinessRuleException(ErrorCode.USUARIO_ALREADY_EXISTS);
         }
 
         Usuario novoUsuario = new Usuario();
-        novoUsuario.setNome(registerRequest.nome());
-        novoUsuario.setSenha(passwordEncoder.encode(registerRequest.senha()));
+        novoUsuario.setUsername(registerRequest.username());
+        novoUsuario.setPassword(passwordEncoder.encode(registerRequest.password()));
 
         Usuario salvo = usuarioRepository.save(novoUsuario);
-        return new UsuarioResponseDTO(salvo.getNome());
+        return new UsuarioResponseDTO(salvo.getUsername());
     }
 }

@@ -12,7 +12,7 @@ public record ClienteRequestDTO(
 
         @NotBlank(message = "Nome é obrigatório")
         @Size(min = 2, max = 100, message = "Nome deve ter no mínimo 2 caracteres e no máximo 100")
-        @Pattern(regexp = "^[\\p{L} ]+$", message = "Nome inválido")
+        @Pattern(regexp = "^[A-Za-zÀ-ú]+( [A-Za-zÀ-ú]+)*$", message = "Nome inválido")
         String nome,
 
         @NotNull(message = "Data de nascimento é obrigatória")

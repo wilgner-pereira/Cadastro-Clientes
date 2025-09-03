@@ -13,13 +13,17 @@ public enum ErrorCode {
     UNAUTHORIZED_ACTION("Ação não autorizada."),
     INVALID_INPUT("Erro na validação dos campos"),
     BAD_FORMAT_JSON("JSON inválido ou malformado"),
-    UNEXPECTED_ERROR("Erro inesperado");
+    UNEXPECTED_ERROR("Erro inesperado"),
+
+    // AUTENTICAÇÃO
+    INVALID_CREDENTIALS("Credenciais inválidas. Verifique usuário e senha."); // <- novo
 
     private final String mensagem;
 
     ErrorCode(String mensagem) {
         this.mensagem = mensagem;
     }
+
     public String getMensagem() {
         return mensagem;
     }

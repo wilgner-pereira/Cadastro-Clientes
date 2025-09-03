@@ -3,6 +3,8 @@ package com.neoapp.exception;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -68,6 +70,28 @@ public class GlobalExceptionHandler {
                 .body(ApiResponse.error(
                         ex.getErrorCode().name(),
                         ex.getErrorCode().getMensagem()
+                ));
+    }
+
+    @ExceptionHandler(BadCredentialsException.class)
+    public ResponseEntity<ApiResponse<Object>> handleBadCredentials(BadCredentialsException ex) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                .body(ApiResponse.error(
+                        ErrorCode.INVALID_CREDENTIALS.name(),
+                        ErrorCode.INVALID_CREDENTIALS.getMensagem()
+                ));
+
+    }
+
+
+
+    @ExceptionHandler(UsernameNotFoundException.class)
+    public ResponseEntity<ApiResponse<Object>> handleUsernameNotFoundException(UsernameNotFoundException ex) {
+        return ResponseEntity
+                .status(HttpStatus.UNAUTHORIZED)
+                .body(ApiResponse.error(
+                        ErrorCode.INVALID_CREDENTIALS.name(),
+                        ErrorCode.INVALID_CREDENTIALS.getMensagem()
                 ));
     }
 

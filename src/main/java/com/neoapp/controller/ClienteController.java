@@ -5,8 +5,12 @@ import com.neoapp.dto.ClienteResponseDTO;
 import com.neoapp.exception.ApiResponse;
 import com.neoapp.service.ClienteService;
 import jakarta.validation.Valid;
+import org.springdoc.core.annotations.ParameterObject;
+import org.springdoc.core.converters.models.PageableAsQueryParam;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -59,7 +63,11 @@ public class ClienteController {
     }
 
     @GetMapping("/nome")
-    public ResponseEntity<ApiResponse<Page<ClienteResponseDTO>>> buscarPorNome(@RequestParam String nome, Pageable pageable) {
+    @PageableAsQueryParam
+    public ResponseEntity<ApiResponse<Page<ClienteResponseDTO>>> buscarPorNome(
+            @RequestParam String nome,
+            @ParameterObject @PageableDefault(sort = "nome", direction = Sort.Direction.ASC) Pageable pageable) {
+
         Page<ClienteResponseDTO> response = clienteService.listarPorNome(nome, pageable);
         return ResponseEntity
                 .status(HttpStatus.OK)
@@ -67,7 +75,9 @@ public class ClienteController {
     }
 
     @GetMapping
-    public ResponseEntity<ApiResponse<Page<ClienteResponseDTO>>> listarTodos(Pageable pageable) {
+    @PageableAsQueryParam
+    public ResponseEntity<ApiResponse<Page<ClienteResponseDTO>>> listarTodos(
+            @ParameterObject @PageableDefault(sort = "nome", direction = Sort.Direction.ASC) Pageable pageable) {
         Page<ClienteResponseDTO> response = clienteService.listarClientes(pageable);
         return ResponseEntity
                 .status(HttpStatus.OK)

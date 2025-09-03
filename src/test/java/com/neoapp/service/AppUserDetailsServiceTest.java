@@ -1,4 +1,4 @@
-package com.neoapp;
+package com.neoapp.service;
 
 import com.neoapp.model.Usuario;
 import com.neoapp.repository.UsuarioRepository;

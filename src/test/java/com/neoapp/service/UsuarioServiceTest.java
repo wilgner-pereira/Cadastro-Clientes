@@ -1,4 +1,4 @@
-package com.neoapp;
+package com.neoapp.service;
 
 import com.neoapp.dto.RegisterRequestDTO;
 import com.neoapp.dto.UsuarioResponseDTO;
@@ -6,7 +6,6 @@ import com.neoapp.exception.BusinessRuleException;
 import com.neoapp.exception.ErrorCode;
 import com.neoapp.model.Usuario;
 import com.neoapp.repository.UsuarioRepository;
-import com.neoapp.service.UsuarioServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

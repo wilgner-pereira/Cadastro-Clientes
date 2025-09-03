@@ -7,7 +7,7 @@ spring:
   application:
     name: clientes-api
   profiles:
-    active: dev
+    active: prod
 
   # Configurações do JPA (iguais para ambos os perfis)
   jpa:
